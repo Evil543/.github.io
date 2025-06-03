@@ -1,28 +1,240 @@
-<!-- 场地卡片示例（带预约按钮） -->
-<div class="venue-card">
-  <img src="court.jpg" alt="羽毛球馆1号">
-  <h3>羽毛球馆1号</h3>
-  <p>容纳：20人 | 空闲时段：14:00-16:00</p>
-  <button onclick="showBookingForm('court1')">立即预约</button>
-</div>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青春治愈系场地预约</title>
+    <style>
+        /* 青春治愈渐变背景：樱花粉到天空蓝渐变 */
+        body {
+            background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 20%, #a8edea 60%, #fed6e3 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            transition: background 0.5s ease;
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* 表单容器：半透明磨砂玻璃效果 */
+        .form-container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        h1 {
+            color: #5a67d8;
+            margin-bottom: 30px;
+            font-weight: 400;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 2.2rem;
+            background: linear-gradient(45deg, #ff6b6b, #5a67d8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* 输入框样式 */
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+        
+        input[type="text"],
+        input[type="tel"],
+        input[type="datetime-local"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.7);
+        }
+        
+        input:focus {
+            border-color: #5a67d8;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.2);
+            background: white;
+        }
+        
+        input::placeholder {
+            color: #a0aec0;
+            font-style: italic;
+        }
+        
+        /* 按钮容器 */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        /* 按钮设计 */
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .book-btn {
+            background: linear-gradient(to right, #5a67d8, #9f7aea);
+            color: white;
+            box-shadow: 0 4px 15px rgba(90, 103, 216, 0.3);
+        }
+        
+        .book-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(90, 103, 216, 0.4);
+        }
+        
+        .refresh-btn {
+            background: white;
+            color: #5a67d8;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .refresh-btn:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 25px;
+                border-radius: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            input {
+                padding: 13px;
+            }
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-container {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>🌸 青春场地预约 🌸</h1>
+        <form id="bookingForm">
+            <!-- 地址输入 -->
+            <div class="input-group">
+                <label for="address">场地地址</label>
+                <input 
+                    type="text" 
+                    id="address" 
+                    name="address" 
+                    placeholder="请输入详细地址（如：北京市海淀区中关村大街1号）"
+                    required
+                >
+            </div>
+            
+            <!-- 时间输入 -->
+            <div class="input-group">
+                <label for="time">预约时间</label>
+                <input 
+                    type="datetime-local" 
+                    id="time" 
+                    name="time" 
+                    required
+                >
+            </div>
+            
+            <!-- 联系方式 -->
+            <div class="input-group">
+                <label for="contact">联系方式</label>
+                <input 
+                    type="tel" 
+                    id="contact" 
+                    name="contact" 
+                    placeholder="请输入手机号码"
+                    required
+                    pattern="[0-9]{11}"
+                >
+            </div>
+            
+            <!-- 按钮组 -->
+            <div class="btn-group">
+                <button type="submit" class="btn book-btn">立即预定</button>
+                <button type="button" class="btn refresh-btn" onclick="resetForm()">刷新信息</button>
+            </div>
+        </form>
+    </div>
 
-<!-- 预约表单（隐藏状态） -->
-<div id="bookingForm" style="display:none">
-  <input type="text" placeholder="姓名" id="userName">
-  <input type="tel" placeholder="手机号" id="userPhone">
-  <button onclick="submitBooking()">提交预约</button>
-</div>
-
-<script>
-  // 模拟数据存储
-  function submitBooking() {
-    const booking = {
-      venue: selectedVenue,
-      name: document.getElementById('userName').value,
-      phone: document.getElementById('userPhone').value,
-      time: new Date().toLocaleString()
-    };
-    localStorage.setItem('latestBooking', JSON.stringify(booking));
-    alert("预约成功！");
-  }
-</script>
+    <script>
+        // 刷新按钮功能
+        function resetForm() {
+            document.getElementById('bookingForm').reset();
+        }
+        
+        // 表单提交处理
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const address = document.getElementById('address').value;
+            const time = document.getElementById('time').value;
+            const contact = document.getElementById('contact').value;
+            
+            // 简单验证
+            if(!address || !time || !contact) {
+                alert('请填写完整信息！');
+                return;
+            }
+            
+            // 此处可添加AJAX提交逻辑
+            alert(`预定成功！\n地址：${address}\n时间：${new Date(time).toLocaleString()}\n联系方式：${contact}`);
+        });
+        
+        // 设置默认时间为明天
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById('time').value = tomorrow.toISOString().slice(0, 16);
+    </script>
+</body>
+</html>
