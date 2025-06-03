@@ -1,0 +1,28 @@
+<!-- 场地卡片示例（带预约按钮） -->
+<div class="venue-card">
+  <img src="court.jpg" alt="羽毛球馆1号">
+  <h3>羽毛球馆1号</h3>
+  <p>容纳：20人 | 空闲时段：14:00-16:00</p>
+  <button onclick="showBookingForm('court1')">立即预约</button>
+</div>
+
+<!-- 预约表单（隐藏状态） -->
+<div id="bookingForm" style="display:none">
+  <input type="text" placeholder="姓名" id="userName">
+  <input type="tel" placeholder="手机号" id="userPhone">
+  <button onclick="submitBooking()">提交预约</button>
+</div>
+
+<script>
+  // 模拟数据存储
+  function submitBooking() {
+    const booking = {
+      venue: selectedVenue,
+      name: document.getElementById('userName').value,
+      phone: document.getElementById('userPhone').value,
+      time: new Date().toLocaleString()
+    };
+    localStorage.setItem('latestBooking', JSON.stringify(booking));
+    alert("预约成功！");
+  }
+</script>
